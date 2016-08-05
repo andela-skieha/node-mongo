@@ -37,3 +37,31 @@ var printMenu = function(db) {
 		}
 	});
 };
+
+// inserting a new document
+var insertBook = function(db) {
+	rl.question('Enter name of the book: ', function(bookName) {
+		rl.question('Enter ISBN of the book: ', function(isbn) {
+			rl.question('Enter author(s) of the book (Comma separated if more than 1): ', function(author) {
+				rl.question('Enter total number of pages: ', function(pageCount) {
+					db.collection(myCollection).find({isbn: isbn}, {}, {}.toArray(
+						function(err, docs) {
+							if (docs.length > 0) {
+								console.log('Book with ISBN ' + isbn + ' already exists');
+								printMenu(dbConn);
+							}
+							else {
+								db.collection(myCollection).insert({
+									'name': bookName,
+									'isbn': isbn,
+									'author': author,
+									'pages': pageCount
+								}, bookInsertHandler);
+							}
+						}
+					));
+				});
+			});
+		});
+	});
+};
