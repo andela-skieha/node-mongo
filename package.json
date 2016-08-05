@@ -1,0 +1,22 @@
+{
+  "name": "node-mongo",
+  "version": "1.0.0",
+  "description": "CRUD with NodeJS and MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-skieha/node-mongo.git"
+  },
+  "author": "Njeri Kieha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andela-skieha/node-mongo/issues"
+  },
+  "homepage": "https://github.com/andela-skieha/node-mongo#readme",
+  "dependencies": {
+    "mongodb": "^2.2.5"
+  }
+}
