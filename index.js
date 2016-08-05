@@ -105,3 +105,20 @@ var updateBook = function(db) {
 		);
 	});
 };
+
+// deleting records from db
+var deleteBook = function(db) {
+	rl.question('Enter ISBN of the book you want to delete: ', function(answer) {
+		db.collection(myCollection).find({isbn: answer}, {}, {}).toArray(
+			function(err, docs) {
+				if (docs.length == 0) {
+					console.log('Book with ISBN ' + isbn + ' not found');
+					printMenu(dbConn);
+				}
+				else {
+					db.collection(myCollection).remove({'isbn': answer}, bookDeleteHandler);
+				}
+			}
+		);
+	});
+};
