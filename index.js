@@ -65,3 +65,15 @@ var insertBook = function(db) {
 		});
 	});
 };
+
+// reading records from db
+var listBooks = function(db) {
+	db.collection(myCollection).find({}, {}, {}).toArray(
+		function(err, docs) {
+			for (var index in docs) {
+				console.log(docs[index]);
+			}
+			printMenu(dbConn);
+		}
+	);
+};
