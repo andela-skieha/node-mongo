@@ -1,12 +1,44 @@
 /* eslint-disable no-console */
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
+/*eslint-disable no-unused-vars*/
 
+// importing readline module
 var readline = require('readline');
+
+// initialize reading interface to read from stdin and write to stdout
 var rl = readline.createInterface({
 	input: process.stdin,
 	output: process.stdout
 });
+
+// import required mongodb driver
+var MongoClient = require('mongodb').MongoClient;
+
+// mongodb connection URL
+var dbHost = 'mongodb://localhost:27017/test';
+
+// name of collection
+var myCollection = 'crud';
+
+var dbConn;
+
+// CRUD handlers
+var bookInsertHandler = function(err, recs) {
+	if (err) throw err;
+	console.log('Successfully inserted book into database');
+	printMenu(dbConn);
+};
+
+var bookUpdateHandler = function(err, recs) {
+	if (err) throw err;
+	console.log('Successfully updated book');
+	printMenu(dbConn);
+};
+
+var bookDeleteHandler = function(err, recs) {
+	if (err) throw err;
+	console.log('Successfully deleted the book');
+	printMenu(dbConn);
+};
 
 // printing the menu
 var printMenu = function(db) {
@@ -84,7 +116,7 @@ var updateBook = function(db) {
 		db.collection(myCollection).find({isbn: answer}, {}, {}).toArray(
 			function(err, docs) {
 				if (docs.length == 0) {
-					console.log('Book with ISBN ' + isbn + ' not found');
+					console.log('Book with ISBN ' + answer + ' not found');
 					printMenu(dbConn);
 				}
 				else {
@@ -112,7 +144,7 @@ var deleteBook = function(db) {
 		db.collection(myCollection).find({isbn: answer}, {}, {}).toArray(
 			function(err, docs) {
 				if (docs.length == 0) {
-					console.log('Book with ISBN ' + isbn + ' not found');
+					console.log('Book with ISBN ' + answer + ' not found');
 					printMenu(dbConn);
 				}
 				else {
@@ -122,3 +154,11 @@ var deleteBook = function(db) {
 		);
 	});
 };
+
+// connect to mongodb instance
+MongoClient.connect(dbHost).then(function(db) {
+	dbConn = db;
+	printMenu();
+}).catch(function(err) {
+	throw err;
+});
