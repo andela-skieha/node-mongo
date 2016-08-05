@@ -44,7 +44,7 @@ var insertBook = function(db) {
 		rl.question('Enter ISBN of the book: ', function(isbn) {
 			rl.question('Enter author(s) of the book (Comma separated if more than 1): ', function(author) {
 				rl.question('Enter total number of pages: ', function(pageCount) {
-					db.collection(myCollection).find({isbn: isbn}, {}, {}.toArray(
+					db.collection(myCollection).find({isbn: isbn}, {}, {}).toArray(
 						function(err, docs) {
 							if (docs.length > 0) {
 								console.log('Book with ISBN ' + isbn + ' already exists');
@@ -59,7 +59,7 @@ var insertBook = function(db) {
 								}, bookInsertHandler);
 							}
 						}
-					));
+					);
 				});
 			});
 		});
@@ -76,4 +76,32 @@ var listBooks = function(db) {
 			printMenu(dbConn);
 		}
 	);
+};
+
+// updating records in db
+var updateBook = function(db) {
+	rl.question('Enter ISBN of the book you want to update: ', function(answer) {
+		db.collection(myCollection).find({isbn: answer}, {}, {}).toArray(
+			function(err, docs) {
+				if (docs.length == 0) {
+					console.log('Book with ISBN ' + isbn + ' not found');
+					printMenu(dbConn);
+				}
+				else {
+					rl.question('Enter the name of the book: ', function(bookName) {
+						rl.question('Enter author(s) of the book (comma separated if more than 1): ', function(author) {
+							rl.question('Enter total number of pages: ', function(pageCount) {
+								db.collection(myCollection).update({isbn: answer}, {
+									'name': bookName,
+									'author': author,
+									'pages': pageCount,
+									'isbn': answer
+								}, bookUpdateHandler);
+							});
+						});
+					});
+				}
+			}
+		);
+	});
 };
